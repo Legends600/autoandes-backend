@@ -1,0 +1,2352 @@
+{
+  "info": {
+    "name": "AutoAndes API",
+    "description": "Examen Parcial II - Version A. Ejecutar de arriba hacia abajo (Collection Runner): los logins guardan los tokens que usan las demas carpetas. Cubre 200, 201, 204, 400, 401, 403, 404 y 409.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Autenticación",
+      "item": [
+        {
+          "name": "200 Login admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Devuelve token Bearer con roles y permisos\", function () { const j = pm.response.json(); pm.expect(j.tipo).to.eql(\"Bearer\"); pm.expect(j.expiraEnSegundos).to.eql(3600); pm.expect(j.permisos).to.be.an(\"array\"); pm.expect(j).to.not.have.property(\"password\"); pm.collectionVariables.set(\"tokenAdmin\", j.token); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Auto2026*\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "200 Login asesor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Devuelve token Bearer con roles y permisos\", function () { const j = pm.response.json(); pm.expect(j.tipo).to.eql(\"Bearer\"); pm.expect(j.expiraEnSegundos).to.eql(3600); pm.expect(j.permisos).to.be.an(\"array\"); pm.expect(j).to.not.have.property(\"password\"); pm.collectionVariables.set(\"tokenAsesor\", j.token); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"asesor\",\n  \"password\": \"Auto2026*\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "200 Login jefe de taller",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Devuelve token Bearer con roles y permisos\", function () { const j = pm.response.json(); pm.expect(j.tipo).to.eql(\"Bearer\"); pm.expect(j.expiraEnSegundos).to.eql(3600); pm.expect(j.permisos).to.be.an(\"array\"); pm.expect(j).to.not.have.property(\"password\"); pm.collectionVariables.set(\"tokenJefe\", j.token); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"jefe\",\n  \"password\": \"Auto2026*\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "401 Login con contraseña incorrecta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 401\", function () { pm.response.to.have.status(401); });",
+                  "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"incorrecta\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "401 Login de usuario inactivo (mismo mensaje)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 401\", function () { pm.response.to.have.status(401); });",
+                  "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"inactivo\",\n  \"password\": \"Auto2026*\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "400 Login con datos vacíos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"\",\n  \"password\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "200 Usuario actual (asesor)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Trae roles y permisos\", function () { const j = pm.response.json(); pm.expect(j.roles).to.include(\"ASESOR\"); pm.expect(j.permisos).to.include(\"ORDEN_REGISTRAR\"); pm.expect(j.permisos).to.not.include(\"ORDEN_ANULAR\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Seguridad: 401 y 403",
+      "item": [
+        {
+          "name": "401 Sin token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 401\", function () { pm.response.to.have.status(401); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/servicios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios"
+              ]
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "401 Token alterado",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const t = pm.collectionVariables.get(\"tokenAsesor\").split(\".\"); t[1] = t[1].slice(0, 6) + (t[1][6] === \"Z\" ? \"Y\" : \"Z\") + t[1].slice(7); pm.collectionVariables.set(\"tokenAlterado\", t.join(\".\"));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 401\", function () { pm.response.to.have.status(401); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAlterado}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/servicios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios"
+              ]
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "403 ASESOR intenta anular una orden",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes/1/anular",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes",
+                "1",
+                "anular"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"Intento sin permiso de anular\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "403 ASESOR intenta ver el reporte",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/ingresos-por-servicio",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes",
+                "ingresos-por-servicio"
+              ]
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "403 JEFE_TALLER intenta registrar una orden",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehiculoId\": 7,\n  \"kilometraje\": 10,\n  \"detalles\": [\n    {\n      \"servicioId\": 1,\n      \"cantidad\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "403 ASESOR intenta crear un servicio",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/servicios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"SRV-777\",\n  \"nombre\": \"No permitido\",\n  \"precio\": 10,\n  \"duracionMin\": 30\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "403 JEFE_TALLER intenta crear un vehículo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vehiculos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vehiculos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"ZZZ-000\",\n  \"marca\": \"A\",\n  \"modelo\": \"B\",\n  \"anio\": 2020,\n  \"clienteId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Servicios (JEFE_TALLER)",
+      "item": [
+        {
+          "name": "200 Listar servicios",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/servicios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios"
+              ]
+            }
+          }
+        },
+        {
+          "name": "201 Registrar servicio",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"codigoNuevo\", \"SRV-\" + (500 + Math.floor(Math.random() * 499)));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.collectionVariables.set(\"servicioNuevoId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/servicios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"{{codigoNuevo}}\",\n  \"nombre\": \"Servicio de prueba Postman\",\n  \"precio\": 99.9,\n  \"duracionMin\": 45\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "409 Código de servicio repetido (RN-01)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/servicios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"SRV-001\",\n  \"nombre\": \"Repetido\",\n  \"precio\": 10,\n  \"duracionMin\": 30\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "400 Servicio inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Trae campos\", function () { pm.expect(pm.response.json().campos).to.include.keys(\"codigo\", \"nombre\", \"precio\", \"duracionMin\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/servicios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"X1\",\n  \"nombre\": \"ab\",\n  \"precio\": 0,\n  \"duracionMin\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "404 Servicio inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/servicios/99999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios",
+                "99999"
+              ]
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "200 Obtener servicio creado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/servicios/{{servicioNuevoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios",
+                "{{servicioNuevoId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "200 Editar servicio",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/servicios/{{servicioNuevoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios",
+                "{{servicioNuevoId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"{{codigoNuevo}}\",\n  \"nombre\": \"Servicio editado\",\n  \"precio\": 120,\n  \"duracionMin\": 60\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "200 Dar de baja el servicio (PATCH estado)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Queda inactivo\", function () { pm.expect(pm.response.json().activo).to.eql(false); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/servicios/{{servicioNuevoId}}/estado",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios",
+                "{{servicioNuevoId}}",
+                "estado"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activo\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "409 Eliminar un servicio usado en órdenes (RN-02)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/servicios/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios",
+                "1"
+              ]
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "204 Eliminar el servicio creado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/servicios/{{servicioNuevoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "servicios",
+                "{{servicioNuevoId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Clientes y vehículos (ASESOR)",
+      "item": [
+        {
+          "name": "200 Listar clientes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/clientes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "clientes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "200 Listar vehículos de un cliente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Trae clienteId y clienteNombre, sin entidad anidada\", function () { const v = pm.response.json()[0]; pm.expect(v).to.include.keys(\"clienteId\", \"clienteNombre\"); pm.expect(v).to.not.have.property(\"cliente\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vehiculos?clienteId=4",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vehiculos"
+              ],
+              "query": [
+                {
+                  "key": "clienteId",
+                  "value": "4"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "201 Registrar vehículo",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const L = \"ABCDEFGHJKLMNPQRSTUVWXYZ\"; const r = () => L[Math.floor(Math.random() * L.length)];",
+                  "pm.collectionVariables.set(\"placaNueva\", r() + r() + r() + \"-\" + (100 + Math.floor(Math.random() * 899)));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.collectionVariables.set(\"vehiculoNuevoId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vehiculos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vehiculos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"{{placaNueva}}\",\n  \"marca\": \"Mazda\",\n  \"modelo\": \"CX-5\",\n  \"anio\": 2023,\n  \"clienteId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "409 Placa repetida",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vehiculos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vehiculos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"AAA-111\",\n  \"marca\": \"Mazda\",\n  \"modelo\": \"3\",\n  \"anio\": 2023,\n  \"clienteId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "404 Cliente inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vehiculos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vehiculos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"YYY-888\",\n  \"marca\": \"Mazda\",\n  \"modelo\": \"3\",\n  \"anio\": 2023,\n  \"clienteId\": 99999\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "400 Vehículo inválido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });",
+                  "pm.test(\"Trae campos\", function () { pm.expect(pm.response.json().campos).to.include.keys(\"placa\", \"marca\", \"anio\", \"clienteId\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vehiculos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vehiculos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"abc\",\n  \"marca\": \"\",\n  \"modelo\": \"3\",\n  \"anio\": 1980\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "200 Editar vehículo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vehiculos/{{vehiculoNuevoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vehiculos",
+                "{{vehiculoNuevoId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"{{placaNueva}}\",\n  \"marca\": \"Mazda\",\n  \"modelo\": \"CX-30\",\n  \"anio\": 2024,\n  \"clienteId\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "409 Eliminar un vehículo con órdenes",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vehiculos/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vehiculos",
+                "1"
+              ]
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "204 Eliminar el vehículo creado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vehiculos/{{vehiculoNuevoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vehiculos",
+                "{{vehiculoNuevoId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "404 Vehículo inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/vehiculos/99999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "vehiculos",
+                "99999"
+              ]
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "5. Órdenes de servicio",
+      "item": [
+        {
+          "name": "201 Registrar orden (ASESOR)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"kmNuevo\", Math.floor(Date.now() / 1000) - 1790000000);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "pm.test(\"Total calculado por el servidor (2x120 + 80 = 320)\", function () { const o = pm.response.json(); pm.expect(o.total).to.eql(320); pm.expect(o.estado).to.eql(\"REGISTRADA\"); pm.expect(o.numero).to.match(/^OS-\\d{6}$/); pm.expect(o.detalles).to.have.length(2); });",
+                  "pm.collectionVariables.set(\"ordenNuevaId\", pm.response.json().id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehiculoId\": 7,\n  \"kilometraje\": {{kmNuevo}},\n  \"detalles\": [\n    { \"servicioId\": 1, \"cantidad\": 2 },\n    { \"servicioId\": 4, \"cantidad\": 1 }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "409 Servicio inactivo en el 3.er detalle: revierte todo (RN-03)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"kmNuevo\", Math.floor(Date.now() / 1000) - 1790000000);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehiculoId\": 7,\n  \"kilometraje\": {{kmNuevo}},\n  \"detalles\": [\n    { \"servicioId\": 1, \"cantidad\": 1 },\n    { \"servicioId\": 2, \"cantidad\": 1 },\n    { \"servicioId\": 8, \"cantidad\": 1 }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "409 Kilometraje menor que el de la última orden (RN-04)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 409\", function () { pm.response.to.have.status(409); });",
+                  "pm.test(\"El mensaje trae el último kilometraje\", function () { pm.expect(pm.response.json().mensaje).to.match(/\\(\\d+ km\\)/); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehiculoId\": 1,\n  \"kilometraje\": 44000,\n  \"detalles\": [\n    {\n      \"servicioId\": 1,\n      \"cantidad\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "400 Servicio repetido en la orden",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehiculoId\": 7,\n  \"kilometraje\": 99,\n  \"detalles\": [\n    {\n      \"servicioId\": 1,\n      \"cantidad\": 1\n    },\n    {\n      \"servicioId\": 1,\n      \"cantidad\": 2\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "400 Cantidad fuera de 1 a 5",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehiculoId\": 7,\n  \"kilometraje\": 99,\n  \"detalles\": [\n    {\n      \"servicioId\": 1,\n      \"cantidad\": 6\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "404 Vehículo inexistente en la orden",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"vehiculoId\": 99999,\n  \"kilometraje\": 99,\n  \"detalles\": [\n    {\n      \"servicioId\": 1,\n      \"cantidad\": 1\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "200 Consultar órdenes (más recientes primero)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Ordenadas por fecha descendente\", function () { const f = pm.response.json().map(o => o.fecha); const orden = [...f].sort().reverse(); pm.expect(f).to.eql(orden); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "200 Consultar con filtros combinados",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes?placa=BBB&estado=REGISTRADA&desde=2026-10-01&hasta=2026-10-31",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes"
+              ],
+              "query": [
+                {
+                  "key": "placa",
+                  "value": "BBB"
+                },
+                {
+                  "key": "estado",
+                  "value": "REGISTRADA"
+                },
+                {
+                  "key": "desde",
+                  "value": "2026-10-01"
+                },
+                {
+                  "key": "hasta",
+                  "value": "2026-10-31"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "200 Sin resultados devuelve lista vacía",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Lista vacía\", function () { pm.expect(pm.response.json()).to.eql([]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes?placa=AAA&estado=ANULADA",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes"
+              ],
+              "query": [
+                {
+                  "key": "placa",
+                  "value": "AAA"
+                },
+                {
+                  "key": "estado",
+                  "value": "ANULADA"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "400 Estado inválido en el filtro",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes?estado=XX",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes"
+              ],
+              "query": [
+                {
+                  "key": "estado",
+                  "value": "XX"
+                }
+              ]
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "200 Obtener orden con su detalle",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes/{{ordenNuevaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes",
+                "{{ordenNuevaId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "404 Orden inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAsesor}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes/99999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes",
+                "99999"
+              ]
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "400 Anular con motivo corto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes/{{ordenNuevaId}}/anular",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes",
+                "{{ordenNuevaId}}",
+                "anular"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"corto\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "409 Anular una orden de otro día (RN-05)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes/1/anular",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes",
+                "1",
+                "anular"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"Intento de anular una orden antigua\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        },
+        {
+          "name": "200 Anular la orden de hoy (JEFE_TALLER)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Queda ANULADA\", function () { pm.expect(pm.response.json().estado).to.eql(\"ANULADA\"); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes/{{ordenNuevaId}}/anular",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes",
+                "{{ordenNuevaId}}",
+                "anular"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"El cliente pidió cancelar el trabajo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "409 Anular una orden ya anulada",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ordenes/{{ordenNuevaId}}/anular",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ordenes",
+                "{{ordenNuevaId}}",
+                "anular"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"El cliente pidió cancelar el trabajo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "6. Reportes (JEFE_TALLER)",
+      "item": [
+        {
+          "name": "200 Ingresos por servicio (excluye anuladas)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Ordenado por importe descendente y con la forma de la proyección\", function () { const r = pm.response.json(); pm.expect(r[0]).to.include.keys(\"codigo\", \"servicio\", \"cantidadTotal\", \"importeTotal\"); const imp = r.map(x => x.importeTotal); pm.expect(imp).to.eql([...imp].sort((a, b) => b - a)); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/ingresos-por-servicio",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes",
+                "ingresos-por-servicio"
+              ]
+            }
+          }
+        },
+        {
+          "name": "200 Ingresos con rango de fechas",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/ingresos-por-servicio?desde=2026-10-01&hasta=2026-10-15",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes",
+                "ingresos-por-servicio"
+              ],
+              "query": [
+                {
+                  "key": "desde",
+                  "value": "2026-10-01"
+                },
+                {
+                  "key": "hasta",
+                  "value": "2026-10-15"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "400 Rango de fechas invertido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenJefe}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/ingresos-por-servicio?desde=2026-10-15&hasta=2026-10-01",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes",
+                "ingresos-por-servicio"
+              ],
+              "query": [
+                {
+                  "key": "desde",
+                  "value": "2026-10-15"
+                },
+                {
+                  "key": "hasta",
+                  "value": "2026-10-01"
+                }
+              ]
+            }
+          },
+          "extra": [
+            "pm.test(\"Formato de error comun\", function () { const j = pm.response.json(); pm.expect(j).to.include.keys(\"timestamp\", \"status\", \"error\", \"mensaje\", \"ruta\"); });"
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    }
+  ]
+}
