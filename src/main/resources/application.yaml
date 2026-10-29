@@ -2,12 +2,8 @@ spring:
   application:
     name: autoandes-backend
   profiles:
-    # Perfil por defecto: lee application-local.yaml (ignorado por git) con las credenciales locales
-    default: local
-  datasource:
-    url: ${DB_URL:jdbc:oracle:thin:@//localhost:1522/FREEPDB1}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    # Perfil por defecto: dev. Para produccion: SPRING_PROFILES_ACTIVE=prod
+    active: dev
   jpa:
     open-in-view: false
     hibernate:
@@ -22,10 +18,9 @@ spring:
 server:
   port: 8080
 
+# La conexion a la base de datos y la clave de firma JWT se definen en application-dev.yaml y application-prod.yaml
 app:
   jwt:
-    # HS256 exige al menos 32 bytes
-    secret: ${JWT_SECRET}
     expira-en-segundos: 3600
   cors:
     origen-permitido: http://localhost:4200
@@ -33,7 +28,3 @@ app:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-
-logging:
-  level:
-    pe.edu.upeu.autoandes: INFO

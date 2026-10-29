@@ -1,0 +1,17 @@
+# Plantilla del perfil de DESARROLLO.
+# Copia este archivo como application-dev.yaml y completa tus valores.
+# application-dev.yaml esta en .gitignore: las credenciales nunca se suben al repositorio.
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@//localhost:1522/FREEPDB1
+    username: <tu-usuario-de-oracle>
+    password: <tu-contrasena-de-oracle>
+
+app:
+  jwt:
+    # Minimo 32 caracteres (HS256)
+    secret: <una-clave-de-firma-de-al-menos-32-caracteres>
+
+logging:
+  level:
+    pe.edu.upeu.autoandes: DEBUG
