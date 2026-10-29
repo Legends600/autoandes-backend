@@ -1,0 +1,16 @@
+# Perfil de PRODUCCION: ningun secreto va en el repositorio, todo llega por variables de entorno.
+# Activar con: SPRING_PROFILES_ACTIVE=prod
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+app:
+  jwt:
+    # HS256 exige al menos 32 bytes
+    secret: ${JWT_SECRET}
+
+logging:
+  level:
+    pe.edu.upeu.autoandes: INFO
