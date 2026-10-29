@@ -8,6 +8,10 @@ BEGIN
   FOR s IN (SELECT sequence_name FROM user_sequences) LOOP
     EXECUTE IMMEDIATE 'DROP SEQUENCE "' || s.sequence_name || '"';
   END LOOP;
+  -- Flyway crea un sinonimo de su tabla de historial; si queda huerfano, el esquema no se ve vacio
+  FOR y IN (SELECT synonym_name FROM user_synonyms) LOOP
+    EXECUTE IMMEDIATE 'DROP SYNONYM "' || y.synonym_name || '"';
+  END LOOP;
 END;
 /
 EXIT;
