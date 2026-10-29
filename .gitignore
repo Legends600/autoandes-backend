@@ -32,7 +32,6 @@ build/
 ### VS Code ###
 .vscode/
 
-### Credenciales locales (nunca se suben)
-application-local.yaml
-application-local.properties
+### Credenciales de desarrollo (nunca se suben; usar application-dev.yaml.example como plantilla)
+src/main/resources/application-dev.yaml
 .env

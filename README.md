@@ -16,23 +16,26 @@ Cualquier Oracle con un esquema/usuario propio. Con Docker:
 docker run -d --name oracle-local -p 1522:1521 -e ORACLE_PASSWORD=<clave-sys> -e APP_USER=autoandes -e APP_USER_PASSWORD=<clave> gvenzl/oracle-free:latest
 ```
 
-La URL por defecto es `jdbc:oracle:thin:@//localhost:1522/FREEPDB1` (se cambia con la variable `DB_URL`).
+### 2. Perfiles: desarrollo y producción
 
-### 2. Credenciales locales (no se suben a git)
+El perfil activo por defecto es **dev** (`spring.profiles.active: dev` en `application.yaml`). **Ninguna credencial se sube al repositorio.**
 
-Copia el ejemplo y completa tus valores:
+| Perfil | Archivo | Credenciales |
+|---|---|---|
+| `dev` (por defecto) | `application-dev.yaml` (local, en `.gitignore`) | Se crea a partir de `application-dev.yaml.example` con tu usuario y contraseña de Oracle y una clave JWT |
+| `prod` | `application-prod.yaml` | `${DB_URL}`, `${DB_USER}`, `${DB_PASSWORD}` y `${JWT_SECRET}` llegan por variables de entorno |
+
+Para ejecutar en desarrollo, copia la plantilla y completa tus valores:
 
 ```bash
-cp src/main/resources/application-local.yaml.example src/main/resources/application-local.yaml
+cp src/main/resources/application-dev.yaml.example src/main/resources/application-dev.yaml
 ```
 
-```yaml
-DB_USER: autoandes
-DB_PASSWORD: <tu-clave>
-JWT_SECRET: <mínimo 32 caracteres>
-```
+Para ejecutar en producción:
 
-`application-local.yaml` está en `.gitignore`. Como alternativa se pueden definir las variables de entorno `DB_USER`, `DB_PASSWORD`, `JWT_SECRET` y `DB_URL`.
+```bash
+SPRING_PROFILES_ACTIVE=prod DB_URL=... DB_USER=... DB_PASSWORD=... JWT_SECRET=... ./mvnw spring-boot:run
+```
 
 ### 3. Levantar con un solo comando
 
