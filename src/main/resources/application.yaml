@@ -1,3 +1,39 @@
 spring:
   application:
     name: autoandes-backend
+  profiles:
+    # Perfil por defecto: lee application-local.yaml (ignorado por git) con las credenciales locales
+    default: local
+  datasource:
+    url: ${DB_URL:jdbc:oracle:thin:@//localhost:1522/FREEPDB1}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    # HS256 exige al menos 32 bytes
+    secret: ${JWT_SECRET}
+    expira-en-segundos: 3600
+  cors:
+    origen-permitido: http://localhost:4200
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    pe.edu.upeu.autoandes: INFO

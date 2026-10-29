@@ -1,0 +1,8 @@
+# Copia este archivo como application-local.yaml y completa tus valores.
+# application-local.yaml esta en .gitignore: las credenciales nunca se suben al repositorio.
+#
+# Tambien puedes usar variables de entorno con los mismos nombres: DB_USER, DB_PASSWORD, JWT_SECRET, DB_URL.
+DB_USER: autoandes
+DB_PASSWORD: cambia-esta-clave
+# Minimo 32 caracteres (HS256)
+JWT_SECRET: cambia-esta-clave-de-firma-con-mas-de-32-caracteres
